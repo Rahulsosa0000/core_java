@@ -95,7 +95,8 @@ public class StudentManager extends JFrame {
 	    getContentPane().add(button); // Add button to the GUI
 	}
 
-
+//  ----------------------------------------------------------------------------------------------------
+	
 	private void addStudent(ActionEvent e) {
 	    try {
 	        int id = Integer.parseInt(idField.getText().trim());  // Convert String into Integer; this makes id unique
@@ -123,7 +124,8 @@ public class StudentManager extends JFrame {
 	    }
 	}
 
-
+//  -----------------------------------------------------------------------------------------------
+	
 	private void sortStudents(ActionEvent e) {
 		String selectedField = (String) comboBox.getSelectedItem();  // Convert Object into String 
 		List<Entry<Integer, Student>> studentList = new ArrayList<>(studentMap.entrySet());
@@ -177,6 +179,8 @@ public class StudentManager extends JFrame {
 		}
 	}
 
+//  ----------------------------------------------------------------------------------------------
+	
 	private void filterStudent(ActionEvent e) {
 	    // Get the selected filter criteria (ID, Name, or Address)
 	    String filterField = (String) comboBox.getSelectedItem();
@@ -195,7 +199,7 @@ public class StudentManager extends JFrame {
 
 	    // Iterate through the current student map and filter based on the selected field
 	    for (Student student : studentMap.values()) {
-	        boolean matchesFilter = false;
+	        boolean matchesFilter = false;  //  id,name ,address not match it false
            // int filterId = Integer.parseInt(filterValue.trim()); // filter greter then number
 
 	        switch (filterField) {
@@ -211,12 +215,12 @@ public class StudentManager extends JFrame {
 	            break;
 
 	        case "sName":
-//	            if (student.getsName().toLowerCase().contains(filterValue.toLowerCase())) {
-//	                matchesFilter = true;
-//	            }
-	        	if (student.getsName().equals(filterValue)) {
+	            if (student.getsName().toLowerCase().contains(filterValue.toLowerCase())) {
 	                matchesFilter = true;
 	            }
+//	        	if (student.getsName().equals(filterValue)) {
+//	                matchesFilter = true;
+//	            }
 	        	
 	            break;
 	        case "sAddress":
@@ -251,6 +255,8 @@ public class StudentManager extends JFrame {
 	    }
 	}
 	
+	//---------------------------------------------------------------------------------------
+	
 	private void DeleteStudent(ActionEvent e) {
 	    String selectedField = (String) comboBox.getSelectedItem();  // Get the selected field from the comboBox
 
@@ -277,10 +283,12 @@ public class StudentManager extends JFrame {
 	        
 	    }
 	    else if ("sName".equals(selectedField)) {
-	        boolean isDeleted = false;
-	        List<Integer> keysToRemove = new ArrayList<>();
-	        for (Map.Entry<Integer, Student> entry : studentMap.entrySet()) {
-	            if (entry.getValue().getsName().equalsIgnoreCase(input.trim())) {
+	        boolean isDeleted = false;  // check weather deletion  id false return id not found
+	        List<Integer> keysToRemove = new ArrayList<>();//Creates an empty list called keysToRemove. 
+	        //This list will store the IDs (keys) of the students who match the given name and need to be removed from the map.
+	        
+	        for (Map.Entry<Integer, Student> entry : studentMap.entrySet()) {  // contain key and value 
+	            if (entry.getValue().getsName().equalsIgnoreCase(input.trim())) { // if value match name 		
 	                keysToRemove.add(entry.getKey());
 	                isDeleted = true;
 	            }
@@ -293,7 +301,26 @@ public class StudentManager extends JFrame {
 	            JOptionPane.showMessageDialog(this, "No student found with the name '" + input.trim() + "'.");
 	        }
 	    }
-	}
+	    else if ("sAddress".equals(selectedField)) {
+	        boolean isDeleted = false;  // check weather deletion  id false return id not found
+	        List<Integer> keysToRemove = new ArrayList<>();
+	        for (Map.Entry<Integer, Student> entry : studentMap.entrySet()) {
+	            if (entry.getValue().getsAddress().equalsIgnoreCase(input.trim())) {
+	                keysToRemove.add(entry.getKey());
+	                isDeleted = true;
+	            }
+	        }
+	        keysToRemove.forEach(studentMap::remove);
+	        if (isDeleted) {
+	            JOptionPane.showMessageDialog(this, "Student(s) with Address '" + input.trim() + "' deleted successfully.");
+	            updateStudentList();  // Refresh list after deletion
+	        } else {
+	            JOptionPane.showMessageDialog(this, "No student found with the Address '" + input.trim() + "'.");
+	        }
+	    }
+	    
+	}  
+	
 	
 	private void updateStudentList() {
 	    model.clear(); // Clear the existing list
@@ -350,6 +377,8 @@ public class StudentManager extends JFrame {
 //	        JOptionPane.showMessageDialog(this, "No student found with the name '" + nameToDelete + "'.");
 //	    }
 //	}
+	
+	// ----------------------------------------------------------------------
 
 	private void updateStudent(ActionEvent e) {
 	    String selectedField = (String) comboBox.getSelectedItem();  // Get the selected field from the comboBox
